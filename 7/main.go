@@ -3,8 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"strings"
 	"os"
+	"strconv"
+	"strings"
 )
 
 type Stack []string
@@ -28,36 +29,102 @@ func (s *Stack) Pop() (string, bool) {
 	}
 }
 
-func main() {
-	file, _ := os.Open("inp")
-	scanner := bufio.NewScanner(file)
-	var stack Stack
-	for scanner.Scan() {
-		ln := strings.Split(scanner.Text(), " ")
-		if ln[0] == "$" {
-			if ln[1] == "cd" {
-				if ln[2] == ".." {
-					stack.Pop()
-				} else if ln[2] == "/" {
-					for len(stack) > 0 {
-						stack.Pop()
-					}
-				} else {
-					stack.Push(ln[2])
-				}
-			} else if ln[2] == "ls" {
-				
-			}
-		} else {
-
-		}
-	}
-
-	for len(stack) > 0 {
-		x, y := stack.Pop()
-		if y == true {
-			fmt.Println(x)
-		}
+func (s *Stack) Top() string {
+	if s.IsEmpty() {
+		return ""
+	} else {
+		index := len(*s) - 1
+		element := (*s)[index]
+		return element
 	}
 }
 
+func (s *Stack) Clear() {
+	*s = nil
+}
+
+func (s *Stack) Print() {
+	var temp Stack
+	for len(*s) > 0 {
+		x, _ := s.Pop()
+		temp.Push(x)
+	}
+	for len(temp) > 0 {
+		x, _ := temp.Pop()
+		fmt.Printf("%s ", x)
+		s.Push(x)
+	}
+	fmt.Println()
+}
+
+func main() {
+	file, _ := os.Open("inp")
+	scanner := bufio.NewScanner(file)
+	m := make(map[string]bool)
+	vals := make(map[string]int)
+	czytac := true
+	pth := "/guard"
+	var stack Stack
+	stack.Push("guard")
+	var temp Stack
+	i := 1
+	for scanner.Scan() {
+		i++
+		ln := strings.Split(scanner.Text(), " ")
+		if ln[0] == "$" {
+			if ln[1] == "cd" {
+				czytac = true
+				if ln[2] == ".." {
+					for pth[len(pth)-1] != '/' {
+						pth = pth[:len(pth)-1]
+					}
+					pth = pth[:len(pth)-1]
+					stack.Pop()
+				} else if ln[2] == "/" {
+					pth = "/guard"
+					for len(stack) > 0 {
+						stack.Pop()
+					}
+					stack.Push("guard")
+				} else {
+					pth += "/" + ln[2]
+					stack.Push(ln[2])
+				}
+			} else if ln[1] == "ls" {
+				if m[pth] {
+					czytac = false
+				} else {
+					czytac = true
+					m[pth] = true
+				}
+			}
+		} else if ln[0] != "dir" {
+			if czytac {
+				temp.Clear()
+				for len(stack) > 0 {
+					x, _ := stack.Pop()
+					temp.Push(x)
+					mark, _ := strconv.Atoi(ln[0])
+					vals[pth] += mark
+					for pth[len(pth)-1] != '/' {
+						pth = pth[:len(pth)-1]
+					}
+					pth = pth[:len(pth)-1]
+				}
+				for len(temp) > 0 {
+					x, _ := temp.Pop()
+					pth += "/" + x
+					stack.Push(x)
+				}
+			}
+		}
+	}
+
+	var res int
+	for _, element := range vals {
+		if element <= 100000 {
+			res += element
+		}
+	}
+	fmt.Println(res)
+}
