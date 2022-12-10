@@ -7,3 +7,5 @@
 # ocaml
 */*.cmi
 */*.cmo
+
+.vscode
