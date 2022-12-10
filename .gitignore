@@ -1,2 +1,9 @@
-*/main
+# inputs
 */inp*
+
+# executables
+*/main
+
+# ocaml
+*/*.cmi
+*/*.cmo
