@@ -35,8 +35,8 @@ bitset<507> seen[507];
 
 int main()
 {
-    // cout.tie(0);
-    // cin.tie(0)->sync_with_stdio(0);
+    cout.tie(0);
+    cin.tie(0)->sync_with_stdio(0);
 
     ifstream file("inp");
     string s;
