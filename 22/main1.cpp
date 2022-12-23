@@ -45,7 +45,6 @@ bool move(int r)
         }
         if(poz.se+1 > wprz[poz.fi].se && tab[poz.fi][wprz[poz.fi].fi] == '.')
         {
-            cout << "[0] skok z " << poz.se << " do " << wprz[poz.fi].fi << '\n';
             poz.se = wprz[poz.fi].fi;
             return 1;
         }
@@ -60,7 +59,6 @@ bool move(int r)
         }
         if(poz.fi+1 > hprz[poz.se].se && tab[hprz[poz.se].fi][poz.se] == '.')
         {
-            cout << "[1] skok z " << poz.fi << " do " << hprz[poz.se].fi << '\n';
             poz.fi = hprz[poz.se].fi;
             return 1;
         }
@@ -75,7 +73,6 @@ bool move(int r)
         }
         if(poz.se-1 < wprz[poz.fi].fi && tab[poz.fi][wprz[poz.fi].se] == '.')
         {
-            cout << "[2] skok z " << poz.se << " do " << wprz[poz.fi].se << '\n';
             poz.se = wprz[poz.fi].se;
             return 1;
         }
@@ -90,7 +87,6 @@ bool move(int r)
         }
         if(poz.fi-1 < hprz[poz.se].fi && tab[hprz[poz.se].se][poz.se] == '.')
         {
-            cout << "[3] skok z " << poz.fi << " do " << hprz[poz.se].se << '\n';
             poz.fi = hprz[poz.se].se;
             return 1;
         }
@@ -170,12 +166,10 @@ int main()
             {
                 liczba = 0;
                 int num = stoi(s.substr(pocz, i-pocz+1));
-                // cout << r << " o " << num << '\n';
                 for(int j = 0; j < num; j++)
                 {
                     if(!move(r)) break;
                 }
-                cout << "[POZ] " << poz.fi << ", " << poz.se << '\n';
             }
             r = (r + 1) % 4;
         }
@@ -185,12 +179,10 @@ int main()
             {
                 liczba = 0;
                 int num = stoi(s.substr(pocz, i-pocz+1));
-                // cout << r << " o " << num << '\n';
                 for(int j = 0; j < num; j++)
                 {
                     if(!move(r)) break;
                 }
-                cout << "[POZ] " << poz.fi << ", " << poz.se << '\n';
             }
             r = (r + 3) % 4;
         }
@@ -205,17 +197,13 @@ int main()
             {
                 liczba = 0;
                 int num = stoi(s.substr(pocz, i-pocz+1));
-                // cout << r << " o " << num << '\n';
                 for(int j = 0; j < num; j++)
                 {
                     if(!move(r)) break;
                 }
-                cout << "[POZ] " << poz.fi << ", " << poz.se << '\n';
             }
         }
     }
-
-    cout << poz.fi << ", " << poz.se << ", " << r << '\n';
     cout << 1000 * poz.fi + 4 * poz.se + r << '\n';
 }
 
